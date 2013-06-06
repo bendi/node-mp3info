@@ -29,6 +29,7 @@ char *layer_text[] = {
 	"I", "II", "III"
 };
 
+#ifndef WIN32
 /*
  * Name of this one is quite obvious...
  */
@@ -36,6 +37,7 @@ char *layer_text[] = {
 void CenterText(int line, char *text) {
    mvprintw(line,(COLS/2)-((int)strlen(text)/2),text);
 }
+#endif
 
 /* Convert hex digit to integer */
 

@@ -25,20 +25,9 @@
  
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/stat.h>
 #include <ctype.h>
 #include <string.h>
-#ifdef __WIN32__
-#include "win32/curses.h"
-#define uint unsigned int
-#include <getopt.h>
-#ifdef __MINGW32__
-int truncate(const char *name, off_t length);
-#endif
-#else
-#include <curses.h>
-#endif
 #include <signal.h>
 #include "mp3tech.h"
 #include "textfunc.h"
@@ -100,7 +89,7 @@ int galphagenreindex[MAXGENRE+2] = {
 
 int *alphagenreindex=&(galphagenreindex[1]);          
 
-#ifdef __WIN32__
+#ifdef WIN32
 	extern int	opterr,optind,optopt,optreset;
 	extern char	*optarg;
 #endif

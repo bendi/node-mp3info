@@ -73,6 +73,15 @@
 #          'config/<(OS)/<(target_arch)',
         ]
       },
+	  'conditions': [
+        ['OS=="win"', {
+          'link_settings': {
+            'libraries': [
+              '-lWs2_32.lib',
+            ]
+		  }
+        }]
+	  ]
     }
   ]
 }

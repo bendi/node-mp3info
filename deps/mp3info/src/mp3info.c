@@ -32,6 +32,19 @@
 #undef __MAIN
 #include <sys/stat.h>
 
+#include <unistd.h>
+#ifdef WIN32
+#include "win32/curses.h"
+#define uint unsigned int
+#include <getopt.h>
+#ifdef __MINGW32__
+int truncate(const char *name, off_t length);
+#endif
+#else
+#include <curses.h>
+#endif
+
+
 char FILENAME_FORMAT_STRING[]="File: %F\n";
 char ID3_FORMAT_STRING[]="Title:   %-30t Track: %n\nArtist:  %a\nAlbum:   %-30l Year:  %y\nComment: %-30c Genre: %g [%G]\n";
 char TECH_FORMAT_STRING[]="Media Type:  MPEG %2.1v Layer %L\nAudio:       %r KB/s, %qKHz (%o)\nEmphasis:    %e\nCRC:         %E\nCopyright:   %C\nOriginal:    %O\nPadding:     %p\nLength:      %m:%02s\n";
