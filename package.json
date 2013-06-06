@@ -1,0 +1,23 @@
+{
+  "name": "mp3info",
+  "description": "NodeJS native bindings to mp3info.",
+  "keywords": [
+    "mp3info",
+    "mp3",
+    "mpeg",
+    "mpg",
+    "id3",
+    "duration"
+  ],
+  "version": "0.0.1",
+  "author": "Marek Będkowski <marek@bedkowski.pl> (http://thejsteam.com)",
+    "repository": {
+    "type": "git",
+    "url": "git://github.com/bendi/node-mp3info.git"
+  },
+  "main": "./index.js",
+  "dependencies": {
+    "bindings": "*",
+    "debug": "*"
+  }
+}
