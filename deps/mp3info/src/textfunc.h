@@ -33,9 +33,6 @@
 void CenterText(int line, char *text);
 #endif
 char *checkinput(int c, char *string, int length);
-#ifndef WIN32
-char *curs_addparam(WINDOW *win, int line, int length, char *buf);
-#endif
 void buildtag(char *buf, id3tag *tag);
 void display_help();
 void display_genres(int alphagenreindex[],char *typegenre[]);
