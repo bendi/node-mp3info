@@ -28,9 +28,17 @@ to an mp3 file is passed from command-line.
 var mp3info = require('mp3info');
 
 mp3info(process.argv[2], function(err, data) {
+    if (err) {
+    	console.log("ERROR:", err);
+    	return;
+    }
 	console.log(data);
 });
 ```
+API
+------------
+### Methods
+ * mp3info(path, fn);
 
 Projects using mp3info
 ------------
