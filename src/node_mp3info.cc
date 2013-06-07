@@ -89,7 +89,36 @@ void node_get_mp3info_after (uv_work_t *req) {
         argv[1] = Undefined();
         data->callback->Call(Context::GetCurrent()->Global(), 2, argv);
     } else {
-        o->Set(String::NewSymbol("length"), Integer::New(data->mp3->seconds));
+        mp3info* mp3 = data->mp3;
+        o->Set(String::NewSymbol("length"), Integer::New(mp3->seconds));
+        {
+            Local<Object> id3 = Object::New();
+            id3->Set(String::NewSymbol("title"), String::NewSymbol(mp3->id3.title));
+            id3->Set(String::NewSymbol("artist"), String::NewSymbol(mp3->id3.artist));
+            id3->Set(String::NewSymbol("album"), String::NewSymbol(mp3->id3.album));
+            id3->Set(String::NewSymbol("year"), String::NewSymbol(mp3->id3.year));
+            id3->Set(String::NewSymbol("comment"), String::NewSymbol(mp3->id3.comment));
+            o->Set(String::NewSymbol("id3"), id3);
+        }
+        {
+            Local<Object> header = Object::New();
+            
+            header->Set(String::NewSymbol("sync"), Integer::New(mp3->header.sync));
+            header->Set(String::NewSymbol("version"), Integer::New(mp3->header.version));
+            header->Set(String::NewSymbol("version"), Integer::New(mp3->header.layer));
+            header->Set(String::NewSymbol("version"), Integer::New(mp3->header.crc));
+            header->Set(String::NewSymbol("bitrate"), Integer::New(mp3->header.bitrate));
+            header->Set(String::NewSymbol("freq"), Integer::New(mp3->header.freq));
+            header->Set(String::NewSymbol("padding"), Integer::New(mp3->header.padding));
+            header->Set(String::NewSymbol("extension"), Integer::New(mp3->header.extension));
+            header->Set(String::NewSymbol("mode"), Integer::New(mp3->header.mode));
+            header->Set(String::NewSymbol("mode_extension"), Integer::New(mp3->header.mode_extension));
+            header->Set(String::NewSymbol("copyright"), Integer::New(mp3->header.copyright));
+            header->Set(String::NewSymbol("original"), Integer::New(mp3->header.original));
+            header->Set(String::NewSymbol("emphasis"), Integer::New(mp3->header.emphasis));
+            
+            o->Set(String::NewSymbol("header"), header);
+        }
         argv[0] = Undefined();
         argv[1] = o;
         data->callback->Call(Context::GetCurrent()->Global(), 2, argv);
