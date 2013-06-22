@@ -105,8 +105,8 @@ void node_get_mp3info_after (uv_work_t *req) {
             
             header->Set(String::NewSymbol("sync"), Integer::New(mp3->header.sync));
             header->Set(String::NewSymbol("version"), Integer::New(mp3->header.version));
-            header->Set(String::NewSymbol("version"), Integer::New(mp3->header.layer));
-            header->Set(String::NewSymbol("version"), Integer::New(mp3->header.crc));
+            header->Set(String::NewSymbol("layer"), Integer::New(mp3->header.layer));
+            header->Set(String::NewSymbol("crc"), Integer::New(mp3->header.crc));
             header->Set(String::NewSymbol("bitrate"), Integer::New(mp3->header.bitrate));
             header->Set(String::NewSymbol("freq"), Integer::New(mp3->header.freq));
             header->Set(String::NewSymbol("padding"), Integer::New(mp3->header.padding));
