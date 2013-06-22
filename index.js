@@ -1,2 +1,2 @@
 
-exports.mp3info = require('./lib/mp3info');
+module.exports = require('./lib/mp3info');

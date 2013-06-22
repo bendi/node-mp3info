@@ -1,4 +1,4 @@
-var mp3info = require('../lib/mp3info.js');
+var mp3info = require('../index.js');
 
 mp3info(process.argv[2], function(err, data) {
 	if (err) {
