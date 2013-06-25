@@ -14,7 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include <string>
+#include <string.h>
+#include <stdlib.h>
 #include <v8.h>
 #include <node.h>
 #include <node_buffer.h>
