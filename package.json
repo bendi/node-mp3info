@@ -9,7 +9,7 @@
     "id3",
     "duration"
   ],
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Marek Będkowski <marek@bedkowski.pl> (http://thejsteam.com)",
     "repository": {
     "type": "git",
@@ -19,5 +19,14 @@
   "dependencies": {
     "bindings": "*",
     "debug": "*"
+  },
+  "scripts": {
+    "install": "node-pre-gyp install --fallback-to-build"
+  },
+  "binary": {
+    "module_name": "bindings",
+    "module_path": "./build/Release",
+    "remote_uri": "http://maracuya-jukebox.com/distrib/mp3info",
+    "template": "{configuration}/{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz"
   }
 }
