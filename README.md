@@ -1,4 +1,4 @@
-node-mp3info
+node-mp3info [![Build Status](https://travis-ci.org/bendi/node-mp3info.png?branch=master)](https://travis-ci.org/bendi/node-mp3info)
 ============
 
 nodejs native bindings to [mp3info](http://www.ibiblio.org/mp3info/) that compile and run under MSVC++
