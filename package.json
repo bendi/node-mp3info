@@ -27,6 +27,6 @@
     "module_name": "bindings",
     "module_path": "./build/Release",
     "host": "https://mp3info.s3.amazonaws.com",
-	"remote_path" : "./{configuration}/"
+    "remote_path" : "./{configuration}/"
   }
 }
