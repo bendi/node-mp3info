@@ -6,6 +6,6 @@ env:
     - secure: Mo2/iKTCnna24TFRvyYmteOv6J6CDpa+aGQPSlzTYIQqtLD9CUY5N8GsUdgSYkJ/SAOssaLAHGbGuJaimSrkL+Np00eH/eTDNIUQuxpJvYVaY/J36D+vQbDOCZQur7R6oUfkOt6yJFyPKJTjczUi+aPTt+5wumUUZRhPEaIYjfI=
     - secure: bHX9PHgMYKvsr2AxCIiv0Ksw4yuZSu4igAoiqM2KZCQclV5L+Uk6SBJf/Ap5jesaEZl9qTUIM7xd3ISm+fzccWbaNyghTRdlXvARS45Ri0KL+iTzonUiCkI7iyJI0CvniozioNMX7OEHlf23agAjICIPP/JK0Ijge83CJVY0jOQ=
 before_install:
-- npm install -g grunt-cli node-pre-gyp@0.4.1
+- npm install -g grunt-cli node-pre-gyp@0.5.5
 after_success:
 - node-pre-gyp package publish
