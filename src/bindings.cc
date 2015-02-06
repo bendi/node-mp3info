@@ -25,8 +25,6 @@ namespace ns_mp3info {
 void InitMP3INFO(Handle<Object>);
 
 void Initialize(Handle<Object> target) {
-  HandleScope scope;
-
   InitMP3INFO(target);
 }
 

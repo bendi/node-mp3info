@@ -17,10 +17,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <v8.h>
+#include <uv.h>
 #include <node.h>
 #include <node_buffer.h>
 #include "node_mp3info.h"
 //#include "debug.h"
+#include "nan.h"
 
 using namespace v8;
 using namespace node;
@@ -34,15 +36,14 @@ char* stringArgToStr(const v8::Local<v8::Value> arg) {
   return cStr; 
 }
 
-Handle<Value> node_get_mp3_info(const Arguments& args) {
-    HandleScope scope;
+NAN_METHOD(node_get_mp3_info) {
+    NanScope();
     
-	char *filename = stringArgToStr(args[0]);
-    Local<Function> callback = Local<Function>::Cast(args[1]);
+    char *filename = stringArgToStr(args[0]);
     
     mp3info_loop_data* data = new mp3info_loop_data;
     data->filename = filename;
-    data->callback = Persistent<Function>::New(callback);
+    NanAssignPersistent(data->callback, args[1].As<Function>());
     data->scantype = SCAN_QUICK;
     data->fullscan_vbr = VBR_AVERAGE;
     
@@ -53,7 +54,7 @@ Handle<Value> node_get_mp3_info(const Arguments& args) {
         (uv_after_work_cb)node_get_mp3info_after);
 
     
-    return Undefined();
+    NanReturnUndefined();
 }
     
 void node_get_mp3info_async (uv_work_t *req) {
@@ -77,55 +78,54 @@ void node_get_mp3info_async (uv_work_t *req) {
 }
 
 void node_get_mp3info_after (uv_work_t *req) {
-    HandleScope scope;
+    NanScope();
     mp3info_loop_data* data = (mp3info_loop_data*) req->data;
     
     TryCatch try_catch;
-    Local<Object> o = Object::New();
+    Local<Object> o = NanNew<Object>();
     Handle<Value> argv[2];
     if (data->error) {
-        o->Set(String::NewSymbol("msg"), String::New(data->error->c_str(), data->error->length()));
+        o->Set(NanNew<String>("msg"), NanNew<String>(data->error->c_str(), data->error->length()));
 
         argv[0] = o;
-        argv[1] = Undefined();
-        data->callback->Call(Context::GetCurrent()->Global(), 2, argv);
+        argv[1] = NanUndefined();
     } else {
         mp3info* mp3 = data->mp3;
-        o->Set(String::NewSymbol("length"), Integer::New(mp3->seconds));
+        o->Set(NanNew<String>("length"), NanNew<Integer>(mp3->seconds));
         {
-            Local<Object> id3 = Object::New();
-            id3->Set(String::NewSymbol("title"), String::NewSymbol(mp3->id3.title));
-            id3->Set(String::NewSymbol("artist"), String::NewSymbol(mp3->id3.artist));
-            id3->Set(String::NewSymbol("album"), String::NewSymbol(mp3->id3.album));
-            id3->Set(String::NewSymbol("year"), String::NewSymbol(mp3->id3.year));
-            id3->Set(String::NewSymbol("comment"), String::NewSymbol(mp3->id3.comment));
-            o->Set(String::NewSymbol("id3"), id3);
+            Local<Object> id3 = NanNew<Object>();
+            id3->Set(NanNew<String>("title"), NanNew<String>(mp3->id3.title));
+            id3->Set(NanNew<String>("artist"), NanNew<String>(mp3->id3.artist));
+            id3->Set(NanNew<String>("album"), NanNew<String>(mp3->id3.album));
+            id3->Set(NanNew<String>("year"), NanNew<String>(mp3->id3.year));
+            id3->Set(NanNew<String>("comment"), NanNew<String>(mp3->id3.comment));
+            o->Set(NanNew<String>("id3"), id3);
         }
         {
-            Local<Object> header = Object::New();
+            Local<Object> header = NanNew<Object>();
             
-            header->Set(String::NewSymbol("sync"), Integer::New(mp3->header.sync));
-            header->Set(String::NewSymbol("version"), Integer::New(mp3->header.version));
-            header->Set(String::NewSymbol("layer"), Integer::New(mp3->header.layer));
-            header->Set(String::NewSymbol("crc"), Integer::New(mp3->header.crc));
-            header->Set(String::NewSymbol("bitrate"), Integer::New(mp3->header.bitrate));
-            header->Set(String::NewSymbol("freq"), Integer::New(mp3->header.freq));
-            header->Set(String::NewSymbol("padding"), Integer::New(mp3->header.padding));
-            header->Set(String::NewSymbol("extension"), Integer::New(mp3->header.extension));
-            header->Set(String::NewSymbol("mode"), Integer::New(mp3->header.mode));
-            header->Set(String::NewSymbol("mode_extension"), Integer::New(mp3->header.mode_extension));
-            header->Set(String::NewSymbol("copyright"), Integer::New(mp3->header.copyright));
-            header->Set(String::NewSymbol("original"), Integer::New(mp3->header.original));
-            header->Set(String::NewSymbol("emphasis"), Integer::New(mp3->header.emphasis));
+            header->Set(NanNew<String>("sync"), NanNew<Number>(mp3->header.sync));
+            header->Set(NanNew<String>("version"), NanNew<Integer>(mp3->header.version));
+            header->Set(NanNew<String>("layer"), NanNew<Integer>(mp3->header.layer));
+            header->Set(NanNew<String>("crc"), NanNew<Integer>(mp3->header.crc));
+            header->Set(NanNew<String>("bitrate"), NanNew<Integer>(mp3->header.bitrate));
+            header->Set(NanNew<String>("freq"), NanNew<Integer>(mp3->header.freq));
+            header->Set(NanNew<String>("padding"), NanNew<Integer>(mp3->header.padding));
+            header->Set(NanNew<String>("extension"), NanNew<Integer>(mp3->header.extension));
+            header->Set(NanNew<String>("mode"), NanNew<Integer>(mp3->header.mode));
+            header->Set(NanNew<String>("mode_extension"), NanNew<Integer>(mp3->header.mode_extension));
+            header->Set(NanNew<String>("copyright"), NanNew<Integer>(mp3->header.copyright));
+            header->Set(NanNew<String>("original"), NanNew<Integer>(mp3->header.original));
+            header->Set(NanNew<String>("emphasis"), NanNew<Integer>(mp3->header.emphasis));
             
-            o->Set(String::NewSymbol("header"), header);
+            o->Set(NanNew<String>("header"), header);
         }
-        argv[0] = Undefined();
+        argv[0] = NanUndefined();
         argv[1] = o;
-        data->callback->Call(Context::GetCurrent()->Global(), 2, argv);
     }
     
-    data->callback.Dispose();
+    NanNew(data->callback)->Call(NanGetCurrentContext()->Global(), 2, argv);
+    NanDisposePersistent(data->callback);
     delete data;
     
     if (try_catch.HasCaught()) {
@@ -135,10 +135,10 @@ void node_get_mp3info_after (uv_work_t *req) {
 
 
 void InitMP3INFO(Handle<Object> target) {
-  HandleScope scope;
+  NanScope();
 
 #define CONST_INT(value) \
-  target->Set(String::NewSymbol(#value), Integer::New(value), \
+  target->ForceSet(NanNew<String>(#value), NanNew<Integer>(value), \
       static_cast<PropertyAttribute>(ReadOnly|DontDelete));
     
     CONST_INT(SCAN_NONE);
